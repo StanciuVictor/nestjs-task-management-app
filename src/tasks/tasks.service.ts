@@ -16,11 +16,22 @@ export class TasksService {
   /**
    * Creates a way to access the tasks array (which is private) from the outside of this class.
    * The result of this method is an array of tasks => we use : Task[]
+   *
+   * @return {array}  {Task[]}
+   * @memberof TasksService
    */
   getAllTasks(): Task[] {
     return this.tasks;
   }
 
+  /**
+   * Creates a task following the task.model.ts
+   *
+   * @param {string} title
+   * @param {string} description
+   * @return {object}  {Task} - The task created
+   * @memberof TasksService
+   */
   createTask(title: string, description: string): Task {
     const task: Task = {
       // Automatically generate id using uuid
