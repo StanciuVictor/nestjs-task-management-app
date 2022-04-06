@@ -1,7 +1,9 @@
-// TasksService will owns the business logic
+// TasksService owns the business logic
 
 import { Injectable } from '@nestjs/common';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
+// Import v4 and name is uuid
+import { v4 as uuid } from 'uuid';
 
 // Making this @Injectable, makes it a SINGLETON
 // that can be shared across the application
@@ -17,5 +19,22 @@ export class TasksService {
    */
   getAllTasks(): Task[] {
     return this.tasks;
+  }
+
+  createTask(title: string, description: string): Task {
+    const task: Task = {
+      // Automatically generate id using uuid
+      id: uuid(),
+      title,
+      description,
+      // Set by default OPEN
+      status: TaskStatus.OPEN,
+    };
+
+    // Add task to tasks array
+    this.tasks.push(task);
+
+    // Return this newly created task so that our Controller could return in the HTTP response
+    return task;
   }
 }
