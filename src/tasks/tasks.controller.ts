@@ -1,3 +1,5 @@
+// The Controller is the entry point, comunicates with the Service and returns the result
+
 import { Controller } from '@nestjs/common';
 import { TasksService } from './tasks.service';
 
