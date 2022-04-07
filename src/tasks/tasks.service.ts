@@ -10,6 +10,7 @@ import { v4 as uuid } from 'uuid';
 @Injectable()
 export class TasksService {
   // Store the tasks until we implement databases. Making them PRIVATE is a good practice
+  // so other components (e.g. tasksController) don't have access to it
   // Task[] means that the type of tasks will be and array of Task (s)
   private tasks: Task[] = [];
 
