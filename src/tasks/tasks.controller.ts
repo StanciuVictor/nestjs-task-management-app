@@ -1,7 +1,7 @@
 // The Controller is the entry point, comunicates with the Service and returns the result
 // The Controller's only job is to recieve a request, delegate it to where it's needed to achieve the goal, and then return the response
 
-import { Body, Controller, Get, Post } from '@nestjs/common';
+import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.model';
 import { TasksService } from './tasks.service';
@@ -22,6 +22,19 @@ export class TasksController {
   @Get()
   getAllTasks(): Task[] {
     return this.tasksService.getAllTasks();
+  }
+
+  /**
+   * Whenever a GET request on '/tasks:id' comes in with a specified id, this hadler method takes care of it
+   * The result of this method is a task => we use : Task
+   *
+   * @param {string} id - The id of the task
+   * @return {object}  {Task}
+   * @memberof TasksController
+   */
+  @Get('/:id')
+  getTask(@Param('id') id: string): Task {
+    return this.tasksService.getTaskById(id);
   }
 
   /**

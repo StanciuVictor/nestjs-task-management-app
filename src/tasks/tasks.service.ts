@@ -27,7 +27,19 @@ export class TasksService {
   }
 
   /**
-   * Creates a task following the task.model.ts
+   * Creates a way to access a specific task from the outside of this class.
+   * The result of this method is a task => we use : Task
+   *
+   * @param {string} id
+   * @return {object}  {Task}
+   * @memberof TasksService
+   */
+  getTaskById(id: string): Task {
+    return this.tasks.find((task) => task.id === id);
+  }
+
+  /**
+   * Creates a task following the task.model.ts and stores it in the tasks array
    *
    * @param {object} createTaskDto
    * @return {object}  {Task} - The task created
