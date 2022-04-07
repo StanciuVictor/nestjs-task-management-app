@@ -4,6 +4,7 @@ import { Injectable } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 // Import v4 and name is uuid
 import { v4 as uuid } from 'uuid';
+import { CreateTaskDto } from './dto/create-task.dto';
 
 // Making this @Injectable, makes it a SINGLETON
 // that can be shared across the application
@@ -28,12 +29,13 @@ export class TasksService {
   /**
    * Creates a task following the task.model.ts
    *
-   * @param {string} title
-   * @param {string} description
+   * @param {object} createTaskDto
    * @return {object}  {Task} - The task created
    * @memberof TasksService
    */
-  createTask(title: string, description: string): Task {
+  createTask(createTaskDto: CreateTaskDto): Task {
+    const { title, description } = createTaskDto;
+
     const task: Task = {
       // Automatically generate id using uuid
       id: uuid(),

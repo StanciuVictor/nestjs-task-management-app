@@ -2,6 +2,7 @@
 // The Controller's only job is to recieve a request, delegate it to where it's needed to achieve the goal, and then return the response
 
 import { Body, Controller, Get, Post } from '@nestjs/common';
+import { CreateTaskDto } from './dto/create-task.dto';
 import { Task } from './task.model';
 import { TasksService } from './tasks.service';
 
@@ -31,11 +32,7 @@ export class TasksController {
    * @memberof TasksController
    */
   @Post()
-  createTask(
-    //  Retrieve the request params (title, description) using cherrypick? technique
-    @Body('title') title: string,
-    @Body('description') description: string,
-  ): Task {
-    return this.tasksService.createTask(title, description);
+  createTask(@Body() createTaskDto: CreateTaskDto): Task {
+    return this.tasksService.createTask(createTaskDto);
   }
 }
