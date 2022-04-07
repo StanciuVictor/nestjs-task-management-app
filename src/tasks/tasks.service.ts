@@ -63,4 +63,13 @@ export class TasksService {
     // Return this newly created task so that our Controller could return in the HTTP response
     return task;
   }
+
+  /**
+   * Removes the task with specified id from the tasks array
+   *
+   * @param {string} id
+   */
+  deleteTask(id: string): void {
+    this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
 }
