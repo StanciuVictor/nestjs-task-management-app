@@ -41,7 +41,7 @@ export class TasksService {
   /**
    * Creates a task following the task.model.ts and stores it in the tasks array
    *
-   * @param {object} createTaskDto
+   * @param {class} createTaskDto
    * @return {object}  {Task} - The task created
    * @memberof TasksService
    */
@@ -71,5 +71,21 @@ export class TasksService {
    */
   deleteTask(id: string): void {
     this.tasks = this.tasks.filter((task) => task.id !== id);
+  }
+
+  /**
+   * Receives the new status from the request body and updates the specified task's status, then returns the task
+   *
+   * @param {string} id
+   * @param {TaskStatus} status
+   * @return {*}  {Task}
+   * @memberof TasksService
+   */
+  updateTaskStatus(id: string, status: TaskStatus): Task {
+    // Not really a good idea to mutate the task directly like this
+    const task = this.getTaskById(id);
+    task.status = status;
+
+    return task;
   }
 }

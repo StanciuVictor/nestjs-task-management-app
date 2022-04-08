@@ -1,9 +1,17 @@
 // The Controller is the entry point, comunicates with the Service and returns the result
 // The Controller's only job is to recieve a request, delegate it to where it's needed to achieve the goal, and then return the response
 
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
-import { Task } from './task.model';
+import { Task, TaskStatus } from './task.model';
 import { TasksService } from './tasks.service';
 
 // For the route /tasks, let this Controller handle it
@@ -33,7 +41,7 @@ export class TasksController {
    * @memberof TasksController
    */
   @Get('/:id')
-  getTask(@Param('id') id: string): Task {
+  getTaskById(@Param('id') id: string): Task {
     return this.tasksService.getTaskById(id);
   }
 
@@ -59,5 +67,23 @@ export class TasksController {
   @Delete('/:id')
   deleteTask(@Param('id') id: string): void {
     return this.tasksService.deleteTask(id);
+  }
+
+  /**
+   * Calls the Service's updateTaskStatus method and passes the new status and the task's id
+   * to change the status of a specified task
+   * It is a best practice to also define the field or property to be patched ( status )
+   *
+   * @param {string} id
+   * @param {TaskStatus} status
+   * @return {*}  {Task}
+   * @memberof TasksController
+   */
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body('status') status: TaskStatus,
+  ): Task {
+    return this.tasksService.updateTaskStatus(id, status);
   }
 }
