@@ -13,7 +13,8 @@ import {
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
-import { Task, TaskStatus } from './task.model';
+import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { Task } from './task.model';
 import { TasksService } from './tasks.service';
 
 // For the route /tasks, let this Controller handle it
@@ -83,17 +84,18 @@ export class TasksController {
    * Calls the Service's updateTaskStatus method and passes the new status and the task's id
    * to change the status of a specified task
    * It is a best practice to also define the field or property to be patched ( status )
-   *
+ 
    * @param {string} id
-   * @param {TaskStatus} status
+   * @param {UpdateTaskStatusDto} updateTaskStatusDto
    * @return {*}  {Task}
    * @memberof TasksController
    */
   @Patch('/:id/status')
   updateTaskStatus(
     @Param('id') id: string,
-    @Body('status') status: TaskStatus,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
   ): Task {
+    const { status } = updateTaskStatusDto;
     return this.tasksService.updateTaskStatus(id, status);
   }
 }
