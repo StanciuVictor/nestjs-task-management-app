@@ -5,6 +5,7 @@ import { Task, TaskStatus } from './task.model';
 // Import v4 and name is uuid
 import { v4 as uuid } from 'uuid';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 
 // Making this @Injectable, makes it a SINGLETON
 // that can be shared across the application
@@ -24,6 +25,39 @@ export class TasksService {
    */
   getAllTasks(): Task[] {
     return this.tasks;
+  }
+
+  /**
+   * If there are any filters applied, the tasks array is filtered and then returned.
+   * If there are no filters, array of all tasks is returned.
+   *
+   * @param {GetTasksFilterDto} filterDto
+   * @return {*}  {Task[]}
+   * @memberof TasksService
+   */
+  getTasksWithFilters(filterDto: GetTasksFilterDto): Task[] {
+    const { status, search } = filterDto;
+
+    // define temporary array to hold the result
+    let tasks = this.getAllTasks();
+
+    // Filter out tasks with other status than the one searched for
+    if (status) {
+      tasks = tasks.filter((task) => task.status === status);
+    }
+
+    // Keep only those tasks that include searched terms either in title or description
+    if (search) {
+      tasks = tasks.filter((task) => {
+        if (task.title.includes(search) || task.description.includes(search)) {
+          return true;
+        }
+        return false;
+      });
+    }
+
+    // Return final result
+    return tasks;
   }
 
   /**

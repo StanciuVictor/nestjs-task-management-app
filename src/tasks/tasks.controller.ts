@@ -9,8 +9,10 @@ import {
   Param,
   Patch,
   Post,
+  Query,
 } from '@nestjs/common';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { Task, TaskStatus } from './task.model';
 import { TasksService } from './tasks.service';
 
@@ -21,15 +23,23 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   /**
-   * Whenever a GET request on '/tasks' comes in, this hadler method takes care of it
+   * Whenever a GET request on '/tasks' comes in, this hadler method checks if there are any search parameters
+   * and then filters the results, or returns all tasks
    * The result of this method is an array of tasks => we use : Task[]
    *
-   * @return {array} {Task[]} Array of all tasks
+   * @param {GetTasksFilterDto} filterDto
+   * @return {*}  {Task[]}
    * @memberof TasksController
    */
   @Get()
-  getAllTasks(): Task[] {
-    return this.tasksService.getAllTasks();
+  getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
+    // If we have any filters defined, call tasksService.getTasksWithFilters
+    // otherwise, just get all tasks
+    if (Object.keys(filterDto).length) {
+      return this.tasksService.getTasksWithFilters(filterDto);
+    } else {
+      return this.tasksService.getAllTasks();
+    }
   }
 
   /**
