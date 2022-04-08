@@ -59,7 +59,7 @@ export class TasksController {
    * Whenever a POST request comes in to '/tasks', this hadler method takes care of it
    * Te result of this method is a Task => we use : Task
    *
-   * @return {object}  {Task}
+   * @return {*}  {Task}
    * @memberof TasksController
    */
   @Post()
