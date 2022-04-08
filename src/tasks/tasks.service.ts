@@ -1,6 +1,6 @@
 // TasksService owns the business logic
 
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { Task, TaskStatus } from './task.model';
 // Import v4 and name is uuid
 import { v4 as uuid } from 'uuid';
@@ -61,15 +61,21 @@ export class TasksService {
   }
 
   /**
-   * Creates a way to access a specific task from the outside of this class.
-   * The result of this method is a task => we use : Task
+   * Tries to find a task with specified ID. If there is none, throws a 404 Not Found error.
+   * If a task with specified ID is found, it is then returned and made available outside of this class
    *
    * @param {string} id
    * @return {object}  {Task}
    * @memberof TasksService
    */
   getTaskById(id: string): Task {
-    return this.tasks.find((task) => task.id === id);
+    const found = this.tasks.find((task) => task.id === id);
+    if (!found) {
+      // Throws an exception (object of the NotFoundException class) and then bubbles up into the internals of NestJS
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+    // otherwise, return the found task
+    return found;
   }
 
   /**
