@@ -93,15 +93,19 @@ export class TasksService {
     return this.tasksRepository.createTask(createTaskDto);
   }
 
-  // /**
-  //  * Removes the task with specified id from the tasks array
-  //  *
-  //  * @param {string} id
-  //  */
-  // deleteTask(id: string): void {
-  //   const found = this.getTaskById(id);
-  //   this.tasks = this.tasks.filter((task) => task.id !== found.id);
-  // }
+  /**
+   * Removes the task with specified id from the database
+   *
+   * @param {string} id
+   * @return {*}  {Promise<void>}
+   * @memberof TasksService
+   */
+  async deleteTask(id: string): Promise<void> {
+    const result = await this.tasksRepository.delete(id);
+    if (result.affected === 0) {
+      throw new NotFoundException(`Task with ID "${id}" not found`);
+    }
+  }
 
   // /**
   //  * Receives the new status from the request body and updates the specified task's status, then returns the task

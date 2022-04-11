@@ -67,17 +67,17 @@ export class TasksController {
     return this.tasksService.createTask(createTaskDto);
   }
 
-  // /**
-  //  * Deletes a task with specified id
-  //  *
-  //  * @param {string} id
-  //  * @return {*}  {void}
-  //  * @memberof TasksController
-  //  */
-  // @Delete('/:id')
-  // deleteTask(@Param('id') id: string): void {
-  //   return this.tasksService.deleteTask(id);
-  // }
+  /**
+   * Deletes the task with the specified id from the database
+   *
+   * @param {string} id
+   * @return {*}  {Promise<void>}
+   * @memberof TasksController
+   */
+  @Delete('/:id')
+  deleteTask(@Param('id') id: string): Promise<void> {
+    return this.tasksService.deleteTask(id);
+  }
 
   // /**
   //  * Calls the Service's updateTaskStatus method and passes the new status and the task's id
