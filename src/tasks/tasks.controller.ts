@@ -23,25 +23,18 @@ export class TasksController {
   // Make tasksService a private property of TasksController class, and with the type of TasksService
   constructor(private tasksService: TasksService) {}
 
-  // /**
-  //  * Whenever a GET request on '/tasks' comes in, this hadler method checks if there are any search parameters
-  //  * and then filters the results, or returns all tasks
-  //  * The result of this method is an array of tasks => we use : Task[]
-  //  *
-  //  * @param {GetTasksFilterDto} filterDto
-  //  * @return {*}  {Task[]}
-  //  * @memberof TasksController
-  //  */
-  // @Get()
-  // getTasks(@Query() filterDto: GetTasksFilterDto): Task[] {
-  //   // If we have any filters defined, call tasksService.getTasksWithFilters
-  //   // otherwise, just get all tasks
-  //   if (Object.keys(filterDto).length) {
-  //     return this.tasksService.getTasksWithFilters(filterDto);
-  //   } else {
-  //     return this.tasksService.getAllTasks();
-  //   }
-  // }
+  /**
+   * Whenever a GET request on '/tasks' comes in, this hadler method checks if there are any search parameters
+   * and then filters the results, or returns all tasks
+   *
+   * @param {GetTasksFilterDto} filterDto
+   * @return {*}  {Promise<Task[]>}
+   * @memberof TasksController
+   */
+  @Get()
+  getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto);
+  }
 
   /**
    * Whenever a GET request on '/tasks:id' comes in with a specified id, this hadler method takes care of it

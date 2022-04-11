@@ -1,10 +1,46 @@
 import { EntityRepository, Repository } from 'typeorm';
 import { CreateTaskDto } from './dto/create-task.dto';
+import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TaskStatus } from './task-status.enum';
 import { Task } from './task.entity';
 
 @EntityRepository(Task)
 export class TasksRepository extends Repository<Task> {
+  /**
+   * If there are parameters in the request, makes a query on the database with those parameters and
+   * returns all tasks that match the query. Otherwise, returns all tasks
+   * query = status AND (title OR description)
+   *
+   * @param {GetTasksFilterDto} filterDto
+   * @return {*}  {Promise<Task[]>}
+   * @memberof TasksRepository
+   */
+  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+    const { status, search } = filterDto;
+
+    const query = this.createQueryBuilder('task');
+
+    if (status) {
+      // andWhere = we apply a WHERE clause
+      // :status = custom argument - it's a variable whose value is in the object
+      // Could also be 'task.status = :anything', { anything }
+      query.andWhere('task.status = :status', { status });
+    }
+
+    if (search) {
+      query.andWhere(
+        // Find any task where search is LIKE title or LIKE description
+        // Not necessarily exact match, but partial match also
+        // LOWER -> transforms everything to lowercase
+        '(LOWER(task.title) LIKE LOWER(:search) OR LOWER(task.description) LIKE LOWER(:search))',
+        // For example, “Data” matches D_t_ and %at%, while only the latter would match Data Teams.
+        { search: `%${search}%` },
+      );
+    }
+    const tasks = await query.getMany();
+    return tasks;
+  }
+
   /**
    * Creates and saves a task in the database based on the parameters received
    *
