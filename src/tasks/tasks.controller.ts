@@ -79,22 +79,22 @@ export class TasksController {
     return this.tasksService.deleteTask(id);
   }
 
-  // /**
-  //  * Calls the Service's updateTaskStatus method and passes the new status and the task's id
-  //  * to change the status of a specified task
-  //  * It is a best practice to also define the field or property to be patched ( status )
-
-  //  * @param {string} id
-  //  * @param {UpdateTaskStatusDto} updateTaskStatusDto
-  //  * @return {*}  {Task}
-  //  * @memberof TasksController
-  //  */
-  // @Patch('/:id/status')
-  // updateTaskStatus(
-  //   @Param('id') id: string,
-  //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Task {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.tasksService.updateTaskStatus(id, status);
-  // }
+  /**
+   * Calls the Service's updateTaskStatus method and passes the new status and the task's id
+   * to change the status of a specified task
+   * It is a best practice to also define the field or property to be patched ( status )
+   *
+   * @param {string} id
+   * @param {UpdateTaskStatusDto} updateTaskStatusDto
+   * @return {*}  {Task}
+   * @memberof TasksController
+   */
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTaskStatus(id, status);
+  }
 }

@@ -107,19 +107,18 @@ export class TasksService {
     }
   }
 
-  // /**
-  //  * Receives the new status from the request body and updates the specified task's status, then returns the task
-  //  *
-  //  * @param {string} id
-  //  * @param {TaskStatus} status
-  //  * @return {*}  {Task}
-  //  * @memberof TasksService
-  //  */
-  // updateTaskStatus(id: string, status: TaskStatus): Task {
-  //   // Not really a good idea to mutate the task directly like this
-  //   const task = this.getTaskById(id);
-  //   task.status = status;
-
-  //   return task;
-  // }
+  /**
+   * Receives the new status from the request body and updates the specified task's status in the database, then returns the task
+   *
+   * @param {string} id
+   * @param {TaskStatus} status
+   * @return {*}  {Promise<Task>}
+   * @memberof TasksService
+   */
+  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+    const task = await this.getTaskById(id);
+    task.status = status;
+    await this.tasksRepository.save(task);
+    return task;
+  }
 }
