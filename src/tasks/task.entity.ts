@@ -1,7 +1,7 @@
 // By naming this.task.entity.ts, typeORM know to automatically load it (see app.module.ts)
 
 import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
-import { TaskStatus } from './task.model';
+import { TaskStatus } from './task-status.enum';
 
 @Entity()
 export class Task {

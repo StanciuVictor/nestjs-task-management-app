@@ -1,7 +1,7 @@
 // This DTO is used for validating the value of the status the client whats the task to update to
 
 import { IsEnum } from 'class-validator';
-import { TaskStatus } from '../task.model';
+import { TaskStatus } from '../task-status.enum';
 
 export class UpdateTaskStatusDto {
   // Verifies that status is one of those 3 values set in enum
