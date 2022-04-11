@@ -14,6 +14,7 @@ import {
 import { CreateTaskDto } from './dto/create-task.dto';
 import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
+import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
 
 // For the route /tasks, let this Controller handle it
@@ -42,18 +43,17 @@ export class TasksController {
   //   }
   // }
 
-  // /**
-  //  * Whenever a GET request on '/tasks:id' comes in with a specified id, this hadler method takes care of it
-  //  * The result of this method is a task => we use : Task
-  //  *
-  //  * @param {string} id - The id of the task
-  //  * @return {object}  {Task}
-  //  * @memberof TasksController
-  //  */
-  // @Get('/:id')
-  // getTaskById(@Param('id') id: string): Task {
-  //   return this.tasksService.getTaskById(id);
-  // }
+  /**
+   * Whenever a GET request on '/tasks:id' comes in with a specified id, this hadler method takes care of it
+   *
+   * @param {stirng} id
+   * @return {*}  {Promise<Task>}
+   * @memberof TasksController
+   */
+  @Get('/:id')
+  getTaskById(@Param('id') id: string): Promise<Task> {
+    return this.tasksService.getTaskById(id);
+  }
 
   // /**
   //  * Whenever a POST request comes in to '/tasks', this hadler method takes care of it
@@ -83,7 +83,7 @@ export class TasksController {
   //  * Calls the Service's updateTaskStatus method and passes the new status and the task's id
   //  * to change the status of a specified task
   //  * It is a best practice to also define the field or property to be patched ( status )
- 
+
   //  * @param {string} id
   //  * @param {UpdateTaskStatusDto} updateTaskStatusDto
   //  * @return {*}  {Task}
