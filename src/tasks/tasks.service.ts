@@ -16,6 +16,7 @@ export class TasksService {
     @InjectRepository(TasksRepository)
     private tasksRepository: TasksRepository,
   ) {}
+
   // /**
   //  * Creates a way to access the tasks array (which is private) from the outside of this class.
   //  * The result of this method is an array of tasks => we use : Task[]
@@ -81,31 +82,16 @@ export class TasksService {
     return found;
   }
 
-  // /**
-  //  * Creates a task following the task.model.ts and stores it in the tasks array
-  //  *
-  //  * @param {class} createTaskDto
-  //  * @return {object}  {Task} - The task created
-  //  * @memberof TasksService
-  //  */
-  // createTask(createTaskDto: CreateTaskDto): Task {
-  //   const { title, description } = createTaskDto;
-
-  //   const task: Task = {
-  //     // Automatically generate id using uuid
-  //     id: uuid(),
-  //     title,
-  //     description,
-  //     // Set by default OPEN
-  //     status: TaskStatus.OPEN,
-  //   };
-
-  //   // Add task to tasks array
-  //   this.tasks.push(task);
-
-  //   // Return this newly created task so that our Controller could return in the HTTP response
-  //   return task;
-  // }
+  /**
+   * Creates a task following the model in the Entyty and saves it in the database
+   *
+   * @param {CreateTaskDto} createTaskDto
+   * @return {*}  {Promise<Task>}
+   * @memberof TasksService
+   */
+  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksRepository.createTask(createTaskDto);
+  }
 
   // /**
   //  * Removes the task with specified id from the tasks array

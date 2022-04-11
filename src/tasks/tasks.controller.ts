@@ -55,17 +55,17 @@ export class TasksController {
     return this.tasksService.getTaskById(id);
   }
 
-  // /**
-  //  * Whenever a POST request comes in to '/tasks', this hadler method takes care of it
-  //  * Te result of this method is a Task => we use : Task
-  //  *
-  //  * @return {*}  {Task}
-  //  * @memberof TasksController
-  //  */
-  // @Post()
-  // createTask(@Body() createTaskDto: CreateTaskDto): Task {
-  //   return this.tasksService.createTask(createTaskDto);
-  // }
+  /**
+   * Whenever a POST request comes in to '/tasks', this hadler method takes care of it
+   *
+   * @param {CreateTaskDto} createTaskDto
+   * @return {*}  {Promise<Task>}
+   * @memberof TasksController
+   */
+  @Post()
+  createTask(@Body() createTaskDto: CreateTaskDto): Promise<Task> {
+    return this.tasksService.createTask(createTaskDto);
+  }
 
   // /**
   //  * Deletes a task with specified id
