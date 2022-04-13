@@ -3,12 +3,16 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { AuthCredentialsDto } from './dto/auth-credentials.dto';
 import { UsersRepository } from './users.repository';
 import * as bcrypt from 'bcrypt';
+import { JwtService } from '@nestjs/jwt';
+import { JwtPayload } from './jwt-payload.interface';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(UsersRepository)
     private usersRepository: UsersRepository,
+    //Service used for signing the tokens
+    private jwtService: JwtService,
   ) {}
 
   /**
@@ -30,7 +34,9 @@ export class AuthService {
    * @return {*}  {Promise<string>}
    * @memberof AuthService
    */
-  async signIn(authCredentialDto: AuthCredentialsDto): Promise<string> {
+  async signIn(
+    authCredentialDto: AuthCredentialsDto,
+  ): Promise<{ accessToken: string }> {
     const { username, password } = authCredentialDto;
 
     // Checks if there is a user with specified username
@@ -38,7 +44,10 @@ export class AuthService {
 
     // If the user exists in the database AND if the passwords match
     if (user && (await bcrypt.compare(password, user.password))) {
-      return 'success';
+      const payload: JwtPayload = { username };
+      // Generate accessToken basen on payload
+      const accessToken: string = this.jwtService.sign(payload);
+      return { accessToken };
     } else {
       throw new UnauthorizedException('Please check your login credentials.');
     }
