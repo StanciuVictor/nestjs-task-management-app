@@ -18,4 +18,17 @@ export class AuthController {
   signUp(@Body() authCredentialDto: AuthCredentialsDto): Promise<void> {
     return this.authService.signUp(authCredentialDto);
   }
+
+  /**
+   * When a POST req comes on route /signin, the app sends sends the
+   * credentials to the Service for the sign in process
+   *
+   * @param {AuthCredentialsDto} authCredentialDto
+   * @return {*}  {Promise<string>}
+   * @memberof AuthController
+   */
+  @Post('/signin')
+  signIn(@Body() authCredentialDto: AuthCredentialsDto): Promise<string> {
+    return this.authService.signIn(authCredentialDto);
+  }
 }
