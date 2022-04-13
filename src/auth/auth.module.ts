@@ -5,6 +5,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UsersRepository } from './users.repository';
 import { PassportModule } from '@nestjs/passport';
 import { JwtModule } from '@nestjs/jwt';
+import { JwtStrategy } from './jwt.strategy';
 
 @Module({
   imports: [
@@ -19,7 +20,9 @@ import { JwtModule } from '@nestjs/jwt';
     }),
     TypeOrmModule.forFeature([UsersRepository]),
   ],
-  providers: [AuthService],
+  providers: [AuthService, JwtStrategy],
   controllers: [AuthController],
+  // This allows any other module that imports this AuthModule to use this authorization mechanism
+  exports: [JwtStrategy, PassportModule],
 })
 export class AuthModule {}
