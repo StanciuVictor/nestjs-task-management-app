@@ -24,7 +24,7 @@ export class AuthController {
    * credentials to the Service for the sign in process
    *
    * @param {AuthCredentialsDto} authCredentialDto
-   * @return {*}  {Promise<string>}
+   * @return {*}  {Promise<{ accessToken: string }>}
    * @memberof AuthController
    */
   @Post('/signin')

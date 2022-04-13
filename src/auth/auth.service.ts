@@ -31,7 +31,7 @@ export class AuthService {
    * If everything is ok, returns "success"
    *
    * @param {AuthCredentialsDto} authCredentialDto
-   * @return {*}  {Promise<string>}
+   * @return {*}  {Promise<{ accessToken: string }>}
    * @memberof AuthService
    */
   async signIn(
