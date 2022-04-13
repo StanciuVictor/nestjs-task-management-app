@@ -32,7 +32,7 @@ export class UsersRepository extends Repository<User> {
       await this.save(user);
     } catch (err) {
       if (err.code === '23505') {
-        // duplicate username 23505 postgres error
+        // duplicate username => 23505 postgres error
         throw new ConflictException('Username already exists');
       } else {
         // If there is an error with code different from 23505, return internal server error
