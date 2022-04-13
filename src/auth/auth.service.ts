@@ -47,6 +47,7 @@ export class AuthService {
       const payload: JwtPayload = { username };
       // Generate accessToken basen on payload
       const accessToken: string = this.jwtService.sign(payload);
+      // Access Tokens are usually returned in objects
       return { accessToken };
     } else {
       throw new UnauthorizedException('Please check your login credentials.');

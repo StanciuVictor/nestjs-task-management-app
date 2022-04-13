@@ -25,6 +25,8 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
    * Tries to get the user from the database by his username.
    * If user is found, it is returned and Passport will inject it into the
    * request object of our Controller so we always have access to it
+   * When the user is returned, Passport will inject it intro the request
+   * object of the Controller, so we always have access to it
    *
    * @param {JwtPayload} payload
    * @return {*}  {Promise<User>}
