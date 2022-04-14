@@ -1,6 +1,7 @@
 // By naming this.task.entity.ts, typeORM know to automatically load it (see app.module.ts)
 
-import { Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from 'src/auth/user.entity';
+import { Column, Entity, ManyToOne, PrimaryGeneratedColumn } from 'typeorm';
 import { TaskStatus } from './task-status.enum';
 
 @Entity()
@@ -20,4 +21,16 @@ export class Task {
 
   @Column()
   status: TaskStatus;
+
+  /**
+   *This is a relation many to one.
+   * arg 1 -> type of the user property. Unused => prefix with _
+   * arg 2 -> how we acces this property from the 'One' (user) side => user will have a tasks proeprty
+   * arg 3 -> if true: whenever we retrieve the tasks from the db, we also fetch the users with it ?
+   *
+   * @memberof Task
+   */
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  @ManyToOne((_type) => User, (user) => user.tasks, { eager: false })
+  user: User;
 }
