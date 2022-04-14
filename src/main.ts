@@ -3,6 +3,7 @@ import { NestFactory } from '@nestjs/core';
 
 // import root module of the application
 import { AppModule } from './app.module';
+import { TransformInterceptor } from './transform.interceptor';
 
 /**
  * Creates a new NestJS app and get the erver up and running
@@ -13,6 +14,8 @@ async function bootstrap() {
 
   // Whenever NestJS encounters any of the validation decorators, it will know to execute validation pipes
   app.useGlobalPipes(new ValidationPipe());
+  // Run every Interceptor in the app. Will be used within every HTTP route handler
+  app.useGlobalInterceptors(new TransformInterceptor());
 
   await app.listen(3000);
 }
