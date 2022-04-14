@@ -8,18 +8,20 @@ import { Task } from './task.entity';
 @EntityRepository(Task)
 export class TasksRepository extends Repository<Task> {
   /**
-   * If there are parameters in the request, makes a query on the database with those parameters and
-   * returns all tasks that match the query. Otherwise, returns all tasks
-   * query = status AND (title OR description)
+   * Based on the user's info and filters from the request filters
+   * all tasks by user AND by parameters from request
    *
    * @param {GetTasksFilterDto} filterDto
+   * @param {*} user
    * @return {*}  {Promise<Task[]>}
    * @memberof TasksRepository
    */
-  async getTasks(filterDto: GetTasksFilterDto): Promise<Task[]> {
+  async getTasks(filterDto: GetTasksFilterDto, user: User): Promise<Task[]> {
     const { status, search } = filterDto;
 
     const query = this.createQueryBuilder('task');
+    // Select only those tasks whose users match the user that sent the request
+    query.where({ user });
 
     if (status) {
       // andWhere = we apply a WHERE clause

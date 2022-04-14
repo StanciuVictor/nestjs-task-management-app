@@ -30,16 +30,20 @@ export class TasksController {
   constructor(private tasksService: TasksService) {}
 
   /**
-   * Whenever a GET request on '/tasks' comes in, this hadler method checks if there are any search parameters
-   * and then filters the results, or returns all tasks
+   * Whenever a GET request on '/tasks' comes in, this hadler method sends the request
+   * parameters and the user info and sends them to the Service
    *
    * @param {GetTasksFilterDto} filterDto
+   * @param {User} user
    * @return {*}  {Promise<Task[]>}
    * @memberof TasksController
    */
   @Get()
-  getTasks(@Query() filterDto: GetTasksFilterDto): Promise<Task[]> {
-    return this.tasksService.getTasks(filterDto);
+  getTasks(
+    @Query() filterDto: GetTasksFilterDto,
+    @GetUser() user: User,
+  ): Promise<Task[]> {
+    return this.tasksService.getTasks(filterDto, user);
   }
 
   /**
