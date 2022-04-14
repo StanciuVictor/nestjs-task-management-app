@@ -7,6 +7,7 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { TasksRepository } from './tasks.repository';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Task } from './task.entity';
+import { User } from 'src/auth/user.entity';
 
 // Making this @Injectable, makes it a SINGLETON
 // that can be shared across the application
@@ -49,14 +50,15 @@ export class TasksService {
   }
 
   /**
-   * Creates a task following the model in the Entyty and saves it in the database
+   * Receives the task and user info and sends it to the Repository for database actions
    *
    * @param {CreateTaskDto} createTaskDto
+   * @param {User} user
    * @return {*}  {Promise<Task>}
    * @memberof TasksService
    */
-  createTask(createTaskDto: CreateTaskDto): Promise<Task> {
-    return this.tasksRepository.createTask(createTaskDto);
+  createTask(createTaskDto: CreateTaskDto, user: User): Promise<Task> {
+    return this.tasksRepository.createTask(createTaskDto, user);
   }
 
   /**
