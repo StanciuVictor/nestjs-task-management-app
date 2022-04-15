@@ -44,8 +44,8 @@ export class TasksService {
    * @return {*}  {Promise<Task>}
    * @memberof TasksService
    */
-  async getTaskById(id: string): Promise<Task> {
-    const found = await this.tasksRepository.findOne(id);
+  async getTaskById(id: string, user: User): Promise<Task> {
+    const found = await this.tasksRepository.findOne({ where: { id, user } });
 
     if (!found) {
       // Throws an exception (object of the NotFoundException class) and then bubbles up into the internals of NestJS
@@ -89,10 +89,10 @@ export class TasksService {
    * @return {*}  {Promise<Task>}
    * @memberof TasksService
    */
-  async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
-    const task = await this.getTaskById(id);
-    task.status = status;
-    await this.tasksRepository.save(task);
-    return task;
-  }
+  // async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
+  //   const task = await this.getTaskById(id);
+  //   task.status = status;
+  //   await this.tasksRepository.save(task);
+  //   return task;
+  // }
 }
