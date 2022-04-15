@@ -5,6 +5,7 @@ import { TasksModule } from './tasks/tasks.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AuthModule } from './auth/auth.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { configValidationSchema } from './config.schema';
 
 @Module({
   imports: [
@@ -14,6 +15,8 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
       ConfigModule loads the correct environment file (.env.stage.dev or prod)
       STAGE is defined in package.json -> scripts */
       envFilePath: [`.env.stage.${process.env.STAGE}`],
+      // Impose validation on config files
+      validationSchema: configValidationSchema,
     }),
     TasksModule,
     AuthModule,
