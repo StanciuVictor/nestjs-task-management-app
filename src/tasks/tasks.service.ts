@@ -35,12 +35,14 @@ export class TasksService {
   }
 
   /**
-   * Tries to fetch a task with specified ID from the database. If there is none, throws a 404 Not Found error.
-   * If a task with specified ID is found, it is then returned.
+   * Tries to fetch a user's task with specified ID from the database.
+   * If there is none, throws a 404 Not Found error.
+   * If the task is found, it is then returned.
    * Async because we interact with a db.
    * Because it is async, it returns a promise of type task => we use Promise<Task>
    *
    * @param {string} id
+   * @param {User} user
    * @return {*}  {Promise<Task>}
    * @memberof TasksService
    */
@@ -82,17 +84,24 @@ export class TasksService {
   }
 
   /**
-   * Receives the new status from the request body and updates the specified task's status in the database, then returns the task
+   * Receives the task id, new status from the request body and user info.
+   * Gets the user's specified task from the db, updates the status and saves the task to the db
+   * Returns the task
    *
    * @param {string} id
    * @param {TaskStatus} status
+   * @param {User} user
    * @return {*}  {Promise<Task>}
    * @memberof TasksService
    */
-  // async updateTaskStatus(id: string, status: TaskStatus): Promise<Task> {
-  //   const task = await this.getTaskById(id);
-  //   task.status = status;
-  //   await this.tasksRepository.save(task);
-  //   return task;
-  // }
+  async updateTaskStatus(
+    id: string,
+    status: TaskStatus,
+    user: User,
+  ): Promise<Task> {
+    const task = await this.getTaskById(id, user);
+    task.status = status;
+    await this.tasksRepository.save(task);
+    return task;
+  }
 }

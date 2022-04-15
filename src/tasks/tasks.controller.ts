@@ -47,9 +47,11 @@ export class TasksController {
   }
 
   /**
-   * Whenever a GET request on '/tasks:id' comes in with a specified id, this hadler method takes care of it
+   * Whenever a GET request on '/tasks:id' comes in, this handler
+   * retrieves the id and user info and sends them to the Service
    *
-   * @param {stirng} id
+   * @param {string} id
+   * @param {User} user
    * @return {*}  {Promise<Task>}
    * @memberof TasksController
    */
@@ -88,21 +90,22 @@ export class TasksController {
   }
 
   /**
-   * Calls the Service's updateTaskStatus method and passes the new status and the task's id
-   * to change the status of a specified task
+   * Retrieves the task id, task new status and user info and sends them to the Service
    * It is a best practice to also define the field or property to be patched ( status )
    *
    * @param {string} id
    * @param {UpdateTaskStatusDto} updateTaskStatusDto
-   * @return {*}  {Task}
+   * @param {User} user
+   * @return {*}  {Promise<Task>}
    * @memberof TasksController
    */
-  // @Patch('/:id/status')
-  // updateTaskStatus(
-  //   @Param('id') id: string,
-  //   @Body() updateTaskStatusDto: UpdateTaskStatusDto,
-  // ): Promise<Task> {
-  //   const { status } = updateTaskStatusDto;
-  //   return this.tasksService.updateTaskStatus(id, status);
-  // }
+  @Patch('/:id/status')
+  updateTaskStatus(
+    @Param('id') id: string,
+    @Body() updateTaskStatusDto: UpdateTaskStatusDto,
+    @GetUser() user: User,
+  ): Promise<Task> {
+    const { status } = updateTaskStatusDto;
+    return this.tasksService.updateTaskStatus(id, status, user);
+  }
 }
