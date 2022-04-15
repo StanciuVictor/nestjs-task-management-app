@@ -20,6 +20,7 @@ import { GetTasksFilterDto } from './dto/get-tasks-filter.dto';
 import { UpdateTaskStatusDto } from './dto/update-task-status.dto';
 import { Task } from './task.entity';
 import { TasksService } from './tasks.service';
+import { Logger } from '@nestjs/common';
 
 // For the route /tasks, let this Controller handle it
 @Controller('tasks')
@@ -29,9 +30,13 @@ export class TasksController {
   // Make tasksService a private property of TasksController class, and with the type of TasksService
   constructor(private tasksService: TasksService) {}
 
+  // Instantiate a logger and give it context and enable timestamp
+  private logger = new Logger('TasksController', { timestamp: true });
+
   /**
    * Whenever a GET request on '/tasks' comes in, this hadler method sends the request
-   * parameters and the user info and sends them to the Service
+   * parameters and the user info and sends them to the Service.
+   * Also, the Logger logs a short description of the operation to the console
    *
    * @param {GetTasksFilterDto} filterDto
    * @param {User} user
@@ -43,6 +48,11 @@ export class TasksController {
     @Query() filterDto: GetTasksFilterDto,
     @GetUser() user: User,
   ): Promise<Task[]> {
+    this.logger.verbose(
+      `User "${user.username}" retrieving all tasks. Filters: ${JSON.stringify(
+        filterDto,
+      )}`,
+    );
     return this.tasksService.getTasks(filterDto, user);
   }
 
@@ -63,6 +73,7 @@ export class TasksController {
   /**
    * Whenever a POST request comes in to '/tasks', this hadler method takes care of it
    * Retrieves the data (task and user info) from the request and sends it to the Service
+   * Also, the Logger logs a short description of the operation to the console
    *
    * @param {CreateTaskDto} createTaskDto
    * @param {User} user
@@ -74,6 +85,11 @@ export class TasksController {
     @Body() createTaskDto: CreateTaskDto,
     @GetUser() user: User,
   ): Promise<Task> {
+    this.logger.verbose(
+      `User "${user.username}" creating task. Task data: ${JSON.stringify(
+        createTaskDto,
+      )}`,
+    );
     return this.tasksService.createTask(createTaskDto, user);
   }
 
