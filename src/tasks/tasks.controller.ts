@@ -78,15 +78,16 @@ export class TasksController {
   }
 
   /**
-   * Deletes the task with the specified id from the database
+   * Retrieves the task id and user info from the request and sends them to the Service
    *
    * @param {string} id
+   * @param {User} user
    * @return {*}  {Promise<void>}
    * @memberof TasksController
    */
   @Delete('/:id')
-  deleteTask(@Param('id') id: string): Promise<void> {
-    return this.tasksService.deleteTask(id);
+  deleteTask(@Param('id') id: string, @GetUser() user: User): Promise<void> {
+    return this.tasksService.deleteTask(id, user);
   }
 
   /**
