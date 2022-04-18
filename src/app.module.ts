@@ -27,7 +27,11 @@ import { configValidationSchema } from './config.schema';
       // This is called by NestJS whenever we want to initialize this module async
       // Whatever this func returns is going to be the config for this module
       useFactory: async (/*This is Dep Inj*/ configService: ConfigService) => {
+        // true if in prod, false if not
+        const isProduction = configService.get('STAGE') === 'prod';
         return {
+          ssl: isProduction,
+          extra: { ssl: isProduction ? { rejectUnauthorized: false } : null },
           // Below are all config values
           type: 'postgres',
           // Automatically load entities (defined in nestjs) that translate to tables and schemas (using typeorm)
